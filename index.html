@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<!-- DocuPlow — idea-0001 r3, session sont-seasonal-care__20260927-122912.
+     Local engineering page (two-state contract): fully inert. See README.md.
+     Copy tags appear as HTML comments ([H-1] … [F-2]) per ui-ux spec § 2.3.
+     r3 delta: in-form status region + consent banner + tracking pair at
+     base-template parity (canonical signup.js / tracking.js, banner ships
+     hidden) — all 51 certified copy lines byte-identical to r2. -->
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DocuPlow</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site-header">
+  <div class="container">
+    <p class="wordmark">DocuPlow</p>
+  </div>
+</header>
+
+<main id="main" tabindex="-1">
+
+  <!-- ============================== Hero ============================== -->
+  <section class="hero" aria-labelledby="h1">
+    <div class="container hero-grid">
+      <div class="hero-text">
+        <!-- [H-B] -->
+        <p class="badge"><span class="badge-dot" aria-hidden="true"></span>Launching Q4 2026</p>
+        <!-- [H-1] -->
+        <h1 id="h1">Every storm on the record.</h1>
+        <!-- [H-2] -->
+        <p class="lede">DocuPlow turns the service logs you already keep into weather-anchored storm dossiers and your SASC annual-report package — without changing the way you run your routes.</p>
+        <!-- [H-3] -->
+        <p class="hero-cta">See what DocuPlow assembles for you. <a href="#signup">Leave your work email and we'll send the launch details.</a></p>
+      </div>
+
+      <!-- Product mockup: decorative illustration only — digit-free demo data,
+           inert span controls (never interactive), aria-hidden per ui-ux spec § 2.5. -->
+      <div class="mockup" aria-hidden="true">
+        <div class="mockup-stack">
+          <div class="back-sheet">
+            <p class="back-title">Annual report package</p>
+            <p class="mock-row">Salt usage — rolled up</p>
+            <p class="mock-row">Service counts — rolled up</p>
+            <p class="mock-row">Weather context — attached</p>
+          </div>
+          <div class="dossier-window">
+            <div class="window-chrome">
+              <span class="window-title">DocuPlow</span>
+              <span class="window-actions">
+                <span class="mock-btn">Export PDF</span>
+                <span class="mock-btn">Open checklist</span>
+              </span>
+            </div>
+            <div class="sheet">
+              <div class="sheet-title-row">
+                <span class="sheet-title">Storm dossier</span>
+                <span class="status-chip">assembled</span>
+              </div>
+              <p class="mock-row">Plow pass — time logged</p>
+              <p class="mock-row">Salt application — rate logged</p>
+              <p class="mock-row">Patrol pass — logged</p>
+              <p class="mock-row">ECCC station data (nearest station)</p>
+              <p class="mock-row">Station name — noted on record</p>
+              <p class="mock-row">Data gaps — noted</p>
+              <div class="photo-row">
+                <div class="photo-frame"><span class="photo-label">site photo (as supplied)</span></div>
+                <div class="photo-frame"><span class="photo-label">site photo (as supplied)</span></div>
+              </div>
+              <p class="sheet-foot">Prepared at export — timestamped</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =========================== Problem ============================== -->
+  <section id="problem" aria-labelledby="problem-h">
+    <div class="container">
+      <!-- [P-0] -->
+      <h2 id="problem-h" class="section-h rule-head">The side with the records tells the story.</h2>
+      <!-- [P-1] -->
+      <p class="prose">You already log the work — plow times, salt rates, patrol passes, photos. But those logs live in your CRM, and the questions show up somewhere else entirely.</p>
+      <div class="onfile">
+        <!-- [P-2] -->
+        <p>Since 2021, Ontario's Occupiers' Liability Act has given claimants 60 days to serve written notice of a winter slip-and-fall — and that notice can land on the snow contractor, not just the property owner. When it does, the Act expects you to pass it along, preserve your records for the date, and get your broker in the loop.</p>
+        <!-- [P-3] -->
+        <p>Late notice isn't automatically fatal — the Act lets courts excuse it where there's a reasonable excuse. But either way, it's your records that tell your side.</p>
+      </div>
+      <!-- [P-4] -->
+      <p class="prose">And the record-keeping never really stops: <strong>SASC certification</strong> asks for an annual report, <strong>insurers and adjusters</strong> ask for documentation when a claim lands, and <strong>property managers</strong> demand service logs by contract.</p>
+    </div>
+  </section>
+
+  <!-- ========================== What it does ========================== -->
+  <section id="what" aria-labelledby="what-h">
+    <div class="container">
+      <!-- [W-0] -->
+      <h2 id="what-h" class="section-h">What DocuPlow does</h2>
+      <div class="feature-grid">
+        <div class="feature-card">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="4" width="10" height="16" rx="1"/><path d="M6 9h4M6 13h4"/><path d="M22 12h-6"/><path d="m19 9-3 3 3 3"/></svg>
+          <!-- [W-1a] -->
+          <h3>Log import</h3>
+          <!-- [W-1b] -->
+          <p>Pull in the season's service logs from the snow-ops CRM you already run — CSV upload or API import. No rip-and-replace.</p>
+        </div>
+        <div class="feature-card">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><g transform="translate(2.2 -1) scale(0.8)"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a4 4 0 0 0 0-8z"/></g><path d="M8.5 19v2M12 19v2M15.5 19v2"/></svg>
+          <!-- [W-2a] -->
+          <h3>ECCC station weather</h3>
+          <!-- [W-2b] -->
+          <p>For any event window you choose, DocuPlow pulls hourly weather from the nearest Environment and Climate Change Canada station to each site — ECCC station data (nearest station), named right on the record.</p>
+        </div>
+        <div class="feature-card">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M14 3H6a1 1 0 0 0-1 1v16a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V8z"/><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M9 13h6M9 17h6"/></svg>
+          <!-- [W-3a] -->
+          <h3>Per-event dossier PDF</h3>
+          <!-- [W-3b] -->
+          <p>One PDF per storm: your logs, the station weather for that window, and site photos as supplied — organized and timestamped, ready to send to your broker, adjuster or lawyer when they ask.</p>
+        </div>
+        <div class="feature-card">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="4" y="3" width="16" height="18" rx="1"/><path d="m7 7.5 1.5 1.5L11 6.5"/><path d="M13.5 7.5h4"/><path d="m7 12 1.5 1.5L11 11"/><path d="M13.5 12h4"/><path d="m7 16.5 1.5 1.5L11 15.5"/><path d="M13.5 16.5h4"/></svg>
+          <!-- [W-4a] -->
+          <h3>60-day notice checklist</h3>
+          <!-- [W-4b] -->
+          <p>When a notice lands, a step-by-step checklist walks you through the Act's pass-on duties, what to preserve, and what to send your broker — in plain language, with clear disclaimers: documentation tooling, not legal advice.</p>
+        </div>
+        <div class="feature-card feature-card-wide">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M12 3 2.5 7.5 12 12l9.5-4.5z"/><path d="m3.5 12.5 8.5 4 8.5-4"/><path d="m3.5 16.5 8.5 4 8.5-4"/></svg>
+          <!-- [W-5a] -->
+          <h3>Annual report rollup</h3>
+          <!-- [W-5b] -->
+          <p>Season-wide salt usage, service counts and weather context — rolled up into your annual report package in the style SASC certification asks for. Assembled in an afternoon.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== How it works ========================== -->
+  <section id="how" aria-labelledby="how-h">
+    <div class="container">
+      <h2 id="how-h" class="sr-only">How it works</h2>
+      <div class="steps">
+        <!-- [I-1] -->
+        <p class="step"><span class="step-token">1 — </span>Import your season: drop in your CRM's CSV export or API pull and bring the winter's logs over.</p>
+        <!-- [I-2] -->
+        <p class="step"><span class="step-token">2 — </span>Flag the event windows that matter — a specific storm, a complaint date, a claim period.</p>
+        <!-- [I-3] -->
+        <p class="step"><span class="step-token">3 — </span>Export what's asked for: a per-event dossier PDF, the notice-response checklist, or the annual report package.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================ Pricing ============================= -->
+  <section id="pricing" aria-labelledby="pricing-h">
+    <div class="container">
+      <!-- [PR-0] -->
+      <h2 id="pricing-h" class="section-h">Priced like the work — by the season.</h2>
+      <div class="price-card">
+        <!-- [PR-1] -->
+        <p class="price-line"><span class="price-figure">$349 CAD/season</span> — owner-operators and small crews (1–10 employees).</p>
+        <!-- [PR-2] -->
+        <p class="price-note">Bigger operation? Plans scale with company size — <a href="#signup">leave your details</a> and we'll match you to the right tier at launch.</p>
+        <!-- [PR-3] -->
+        <p class="price-flat">One flat season price — no pay-per-report fees.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================== FAQ =============================== -->
+  <section id="faq" aria-labelledby="faq-h">
+    <div class="container">
+      <h2 id="faq-h" class="sr-only">Frequently asked questions</h2>
+      <div class="faq-list">
+        <div class="faq-item">
+          <!-- [Q-1] -->
+          <h3>Is this another dispatch or routing app?</h3>
+          <!-- [A-1] -->
+          <p>No. DocuPlow doesn't route crews, schedule jobs or bill clients — it sits on top of the snow-ops CRM you already run and turns its logs into the records the season demands.</p>
+        </div>
+        <div class="faq-item">
+          <!-- [Q-2] -->
+          <h3>Will it work with my CRM?</h3>
+          <!-- [A-2] -->
+          <p>It's built to import the CSV or API exports your current snow-ops software already produces. If your system exports a CSV, you're covered.</p>
+        </div>
+        <div class="faq-item">
+          <!-- [Q-3] -->
+          <h3>How accurate is the weather data?</h3>
+          <!-- [A-3] -->
+          <p>Dossiers carry ECCC station data (nearest station) for each event window, with the station name and any data gaps noted on the document itself. It's not an on-site sensor, and the dossier never pretends otherwise.</p>
+        </div>
+        <div class="faq-item">
+          <!-- [Q-4] -->
+          <h3>A notice just arrived — what now?</h3>
+          <!-- [A-4] -->
+          <p>The Act doesn't make late notice automatically fatal — courts can excuse late or missing notice where there's a reasonable excuse. Either way, the checklist walks you through the pass-on duties, what to preserve, and what your broker needs.</p>
+        </div>
+        <div class="faq-item">
+          <!-- [Q-5] -->
+          <h3>Is this legal advice?</h3>
+          <!-- [A-5] -->
+          <p>No. It's documentation tooling with plain-language context on Ontario's rules — always read it alongside your own lawyer, broker or insurer.</p>
+        </div>
+        <div class="faq-item">
+          <!-- [Q-6] -->
+          <h3>What does it cost?</h3>
+          <!-- [A-6] -->
+          <p>$349 CAD/season for owner-operators and small crews (1–10 employees). Larger crews move up a tier — leave your details and we'll match you at launch.</p>
+        </div>
+        <div class="faq-item">
+          <!-- [Q-7] -->
+          <h3>Are you affiliated with Smart About Salt?</h3>
+          <!-- [A-7] -->
+          <p>No — Smart About Salt is an independent certification program. Our annual rollup is built in the style of the records that program asks certified contractors to keep.</p>
+        </div>
+        <div class="faq-item">
+          <!-- [Q-8] -->
+          <h3>When does it launch?</h3>
+          <!-- [A-8] -->
+          <p>Q4 2026 — in time for winter. Leave your details below and we'll be in touch when we launch.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== Signup band =========================== -->
+  <section id="signup" class="signup-band" aria-labelledby="signup-heading">
+    <div class="container band-inner">
+      <!-- [S-1] -->
+      <h2 id="signup-heading" class="band-title">Get the launch details first.</h2>
+      <!-- [S-2] -->
+      <p class="band-sub">Leave your details for more info when we launch — one email, no spam.</p>
+      <!-- Inert email capture (two-state contract, ui-ux spec § 4.7): no action
+           attribute, button type="button", no storage. The status region below
+           (r3, live-signup contract) ships EMPTY: signup.js writes success/error
+           messages into it only with a real deployed signup-config.js — locally
+           it renders nothing and the form stays fully inert. -->
+      <form data-signup class="signup-form">
+        <!-- [S-3] -->
+        <label class="field-label" for="signup-email">Work email</label>
+        <div class="form-row">
+          <input type="email" id="signup-email" name="email" autocomplete="email" aria-describedby="signup-consent">
+          <!-- [S-4] -->
+          <button type="button" class="btn-signup">Notify me at launch</button>
+        </div>
+        <p class="signup-status" role="status"></p>
+      </form>
+      <!-- [S-5] -->
+      <p id="signup-consent" class="band-fine">When you sign up, we store the email you give us, the address of this page, and basic technical details (time, IP, browser) so we can tell you about the launch. That's all we collect.</p>
+      <!-- [S-6] -->
+      <p class="band-note">Signing up isn't a purchase — it just gets you the launch details.</p>
+    </div>
+  </section>
+
+</main>
+
+<!-- Consent banner — shared component, certified strings S1–S5 byte-identical
+     (ui-ux spec consent-banner-spec__20261001-142148.md; final strings from
+     marketing-copy consent-privacy-wording__20261001-142148.md; notice_version
+     2026-10-analytics-v1). Adopted at base-template parity in r3 from the
+     certified staging t0001 r3.1 build (revision
+     consent-banner-sticky__20261002-145950) as applied to a production idea
+     page (Quoteleg r5). Ships hidden; tracking.js unhides it only after
+     validating a live enabled window.__SHADOW_TRACKING_CONFIG__ on a non-file:
+     origin. Without that it stays hidden forever: no storage, no requests,
+     fully inert locally. Sticky bottom overlay pinned to the viewport bottom
+     (the 2026-10-02 user directive supersedes the 2026-10-01 normal-flow
+     placement; the page stays scrollable and non-modal). Compact viewports
+     show a small bar whose "Privacy details" disclosure opens as a fullscreen
+     fixed panel (tracking.js adds the .consent-banner--details-open class that
+     hides the bar and makes the background non-focusable, with robust
+     cleanup); the focus-scroll guard keeps "a focused element is never
+     obscured" true under the overlay; desktop keeps the full inline disclosure
+     in a centered, height-capped card. -->
+<aside class="consent-banner" data-consent-banner aria-labelledby="consent-banner-title" hidden>
+  <div class="consent-banner__inner">
+    <h2 id="consent-banner-title" tabindex="-1">Allow visit analytics?</h2>
+    <p class="consent-banner__body">With your permission, we use a random browser ID for up to 30 days to connect visits and signups on this site. We record campaign tags, the pages you visit and basic browser/device details, and keep detailed records for up to 90 days. You can decline and still sign up, or change your choice anytime.</p>
+
+    <div class="consent-banner__actions">
+      <button type="button" class="consent-btn" data-consent-allow>Allow analytics</button>
+      <button type="button" class="consent-btn" data-consent-decline>Decline analytics</button>
+    </div>
+
+    <!-- Manager mode only (reopened via footer "Privacy choices" after a
+         choice exists); hidden in the initial decision state. -->
+    <p class="consent-banner__current" data-consent-current hidden></p>
+    <button type="button" class="consent-btn" data-consent-toggle hidden>Turn off analytics</button>
+    <button type="button" class="consent-btn consent-btn--ghost" data-consent-close hidden>Close</button>
+
+    <!-- Native disclosure; tracking.js adds only focus choreography, Escape
+         and the fullscreen Close handling on live pages. Placed last so the
+         tab order is Allow → Decline → Privacy details in decision mode and
+         turn on/off → Close → Privacy details in manager mode (ui-ux §8.3).
+         The Close control at the top of the body is the fullscreen panel's
+         chrome (compact viewports only; hidden on the desktop inline view). -->
+    <details class="consent-details" data-consent-details>
+      <summary class="consent-details__summary"><span>Privacy details</span></summary>
+      <div class="consent-details__body">
+        <button type="button" class="consent-details__close" data-consent-details-close>Close</button>
+        <p class="consent-details__heading">Who is responsible</p>
+        <p>This site is run by Canvas Tech Solutions, which is responsible for the data described here.</p>
+
+        <p class="consent-details__heading">What we collect if you allow analytics</p>
+        <ul>
+          <li>Campaign tags from the page address, when present: utm_source, utm_medium, utm_campaign, utm_id, utm_content and utm_term. Other tags and ad-click IDs (like gclid or fbclid) are ignored.</li>
+          <li>The page address in a cleaned form: the site, the page path and the accepted campaign tags — not the full address with every parameter.</li>
+          <li>Basic browser/device details: device type, browser family and major version, operating-system family, a screen-size range, and your browser's main language. We don't record the raw browser identification string and we don't fingerprint your device.</li>
+          <li>A random browser ID, kept for up to 30 days: a random code stored for this site only. It's not your name, email or account — but it can be linked to a signup you make here, so it isn't anonymous.</li>
+          <li>A session ID for the current tab, which expires after 30 minutes of inactivity.</li>
+          <li>Visit records: one record per page view measured after you allow analytics, kept for up to 90 days.</li>
+        </ul>
+
+        <p class="consent-details__heading">How analytics connects to signups</p>
+        <p>If you allow analytics and later submit the launch-notification form on this site, your visit can be connected to that signup, so we can see which campaign brought you here. If you decline or haven't chosen, signing up works exactly the same — we just store the page address without campaign tags, and no visit connection is made. Allowing analytics is never required to sign up.</p>
+
+        <p class="consent-details__heading">Service providers</p>
+        <ul>
+          <li>This site's pages are hosted by GitHub Pages (GitHub, Inc.).</li>
+          <li>Signup and analytics records are stored in a PostgreSQL database hosted in Ontario, on Microsoft Azure. Other parts of the service — such as backups or support — may involve processing outside Ontario.</li>
+          <li>The launch-notification form is protected by Google reCAPTCHA Enterprise, a separate security service from Google that checks submissions for abuse. It runs whether or not you allow analytics; declining analytics doesn't turn it off.</li>
+        </ul>
+
+        <p class="consent-details__heading">Why we use this data</p>
+        <ul>
+          <li>To measure which campaigns bring visits and launch-notification signups on this site.</li>
+          <li>To spot coarse browser and device compatibility issues.</li>
+        </ul>
+
+        <p class="consent-details__heading">What we don't do</p>
+        <ul>
+          <li>No advertising trackers or ad pixels.</li>
+          <li>No cross-site identity — your browser ID works on this site only.</li>
+          <li>No joining analytics data to your email address.</li>
+          <li>No fingerprinting.</li>
+          <li>No full IP address in analytics records. Like any website, this site's ordinary hosting and security do receive standard network details such as your IP address — that's separate from the optional analytics choice.</li>
+          <li>If you decline: we store only your choice and its date on your browser — no browser ID, no visit records.</li>
+        </ul>
+
+        <p class="consent-details__heading">How long we keep it</p>
+        <ul>
+          <li>Random browser ID: up to 30 days.</li>
+          <li>Detailed visit records and signup links: up to 90 days.</li>
+          <li>Your privacy choice itself: up to 180 days, or until we make a material change to this notice.</li>
+          <li>Summary counts without browser IDs (for example, visits per campaign per day): up to 13 months.</li>
+        </ul>
+
+        <p class="consent-details__heading">Changing your choice</p>
+        <p>Select 'Privacy choices' anytime. Declining or withdrawing stops collection immediately, clears the browser ID and discards any not-yet-sent visits. Records already made are kept until their normal expiry (above) unless you ask us to delete them.</p>
+
+        <p class="consent-details__heading">Access and deletion</p>
+        <p>You can ask what data is connected to your browser ID, or have it deleted, by contacting the site owner (Canvas Tech Solutions). Because a browser ID alone doesn't prove who you are, we use a basic verification step before sharing or deleting anything.</p>
+      </div>
+    </details>
+  </div>
+</aside>
+
+<!-- ============================== Footer ============================== -->
+<footer class="site-footer">
+  <div class="container">
+    <p class="wordmark">DocuPlow</p>
+    <!-- [F-1] -->
+    <p class="footer-line">DocuPlow — documentation tooling for Ontario snow and ice contractors. Not legal advice.</p>
+    <!-- [F-2] -->
+    <p class="footer-line">Launching Q4 2026.</p>
+    <!-- Persistent post-decision privacy control: hidden until a choice exists
+         and while the banner/manager surface is open (tracking.js toggles it);
+         on the inert local page it never appears. -->
+    <p class="footer-privacy" data-footer-privacy hidden>
+      <button type="button" class="footer-privacy__button" data-consent-reopen>Privacy choices</button>
+      <span class="footer-privacy__state" data-consent-state></span>
+    </p>
+    <!-- Live region for consent state feedback (screen readers); describes the
+         stored preference only, never claims measurement success. -->
+    <p class="sr-only" role="status" data-consent-status></p>
+  </div>
+</footer>
+
+<script src="signup.js" defer></script>
+<script src="signup-config.js" defer></script>
+<script src="tracking-config.js" defer></script>
+<script src="tracking.js" defer></script>
+
+</body>
+</html>

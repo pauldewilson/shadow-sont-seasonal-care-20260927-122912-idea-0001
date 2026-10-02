@@ -1,0 +1,966 @@
+/* ============================================================
+   DocuPlow — "Plain-Paper Trade Sheet" (idea-0001 r2)
+   Build source: ui-ux spec § 3 (tokens) + § 4 (responsive contract)
+   Local engineering page — no motion, no external assets.
+   ============================================================ */
+
+:root {
+  /* Palette — 12 tokens, ui-ux spec § 3.1 (recomputed AA values) */
+  --paper: #F7F8F9;        /* page bg */
+  --surface: #FFFFFF;      /* cards, inputs, mockup sheets, badge */
+  --ink: #1C2430;          /* primary text */
+  --ink-2: #46505C;        /* secondary text, control borders */
+  --rule: #D8DDE2;         /* decorative hairlines only (D-6) */
+  --tint: #E8EDF2;         /* quiet fills */
+  --accent: #1D4E89;       /* links, glyphs, structural emphasis */
+  --action: #C2410C;       /* primary signup button ONLY (D-1) */
+  --action-hover: #9A3412; /* button hover fill (needs 1px paper outline) */
+  --band: #16202B;         /* signup band bg */
+  --band-slate: #A8B3BF;   /* secondary text on band */
+  --error: #8A1C1C;        /* validation text — white surfaces ONLY;
+                              NEVER on the band (1.77:1 — prohibited, § 3.1 #17) */
+
+  /* Type stacks — system/local only, zero font requests (§ 3.2) */
+  --font-serif: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, "Times New Roman", serif;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", Menlo, Consolas, monospace;
+
+  /* Shadows (§ 3.3) */
+  --shadow-card: 0 1px 2px rgba(28, 36, 48, .05), 0 6px 16px rgba(28, 36, 48, .06);
+  --shadow-sheet: 0 2px 4px rgba(28, 36, 48, .08), 0 12px 32px rgba(28, 36, 48, .10);
+}
+
+/* ---------- Base ---------- */
+
+*,
+*::before,
+*::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  overflow-wrap: break-word; /* long-text safety net (§ 4.5) */
+}
+
+.container {
+  max-width: 1120px;
+  margin-inline: auto;
+  padding-inline: 20px;
+}
+
+/* Focus: plain :focus (not :focus-visible-only) — always visible (§ 4.6).
+   2px ring, 2px offset; accent on light surfaces, paper on the navy band. */
+a:focus,
+button:focus,
+input:focus,
+[tabindex]:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+.signup-band a:focus,
+.signup-band button:focus,
+.signup-band input:focus {
+  outline-color: var(--paper);
+}
+/* Single sanctioned suppression: programmatic skip-link target (§ 4.6) */
+main:focus { outline: none; }
+
+/* Visually hidden (screen-reader-only headings, § 5.1) */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Skip link (first tab stop; hidden until focus) ---------- */
+
+.skip-link {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  z-index: 100;
+  padding: 12px 16px; /* ≥ 44px tall when visible (D-7) */
+  background: var(--surface);
+  color: var(--accent);
+  border: 2px solid var(--accent);
+  border-radius: 6px;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.15em;
+  transform: translateY(-200%);
+}
+.skip-link:focus {
+  transform: translateY(0);
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- Header (banner landmark; minimal chrome) ---------- */
+
+.site-header {
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule);
+  padding-block: 14px;
+}
+.site-header .wordmark {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.125rem; /* 18px mobile (§ 4.2) */
+  color: var(--ink);
+}
+@media (min-width: 900px) {
+  .site-header .wordmark { font-size: 1.25rem; }
+}
+
+/* ---------- Sections ---------- */
+
+main > section { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
+
+.section-h {
+  font-family: var(--font-serif);
+  font-size: clamp(1.6875rem, 1.55rem + 0.7vw, 1.875rem);
+  line-height: 1.25;
+  font-weight: 700;
+  margin: 0 0 20px;
+  color: var(--ink);
+}
+
+/* P-0 only: 48px × 3px accent rule above the heading (designer § 5) */
+.rule-head::before {
+  content: "";
+  display: block;
+  width: 48px;
+  height: 3px;
+  background: var(--accent);
+  margin-bottom: 16px;
+}
+
+.prose { max-width: 66ch; margin: 0 0 20px; }
+
+/* Inline sentence links (H-3, PR-2): accent, always underlined,
+   thickness 1.5px → 2px on hover; color never the sole cue (D-1) */
+.hero-cta a,
+.price-note a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 0.15em;
+}
+.hero-cta a:hover,
+.price-note a:hover { text-decoration-thickness: 2px; }
+
+/* ---------- Hero ---------- */
+
+.hero { position: relative; overflow: hidden; }
+.hero .container { position: relative; }
+
+/* Squall lines: the page's first decoration motif (D-9) — ≥ 900px only,
+   confined to the top-right of the content area around the mockup's upper
+   corner, soft-masked fade toward bottom-left, never behind the text column. */
+.hero .container::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 42%;
+  height: 60%;
+  background: repeating-linear-gradient(
+    115deg,
+    rgba(216, 221, 226, 0) 0 118px,
+    rgba(216, 221, 226, .55) 118px 119.5px
+  );
+  -webkit-mask-image: linear-gradient(225deg, #000 20%, transparent 72%);
+  mask-image: linear-gradient(225deg, #000 20%, transparent 72%);
+  pointer-events: none;
+  z-index: 0;
+}
+@media (max-width: 899.98px) {
+  .hero .container::before { content: none; }
+}
+
+.hero-grid { display: grid; gap: 40px; }
+@media (min-width: 900px) {
+  .hero-grid {
+    grid-template-columns: 7fr 5fr;
+    align-items: center;
+  }
+}
+
+.hero-text { position: relative; z-index: 1; }
+
+/* [H-B] badge: white pill, sentence case, never urgency-styled (D-3) */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 24px;
+  padding: 8px 14px;
+  background: var(--surface);
+  border: 1.5px solid var(--ink-2);
+  border-radius: 999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: var(--ink);
+}
+.badge-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 1px;
+  background: var(--accent);
+}
+
+h1 {
+  font-family: var(--font-serif);
+  font-size: clamp(2.25rem, 2rem + 1.6vw, 2.75rem); /* 36 → 44px */
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+  font-weight: 700;
+  margin: 0 0 16px;
+  color: var(--ink);
+}
+
+.lede {
+  max-width: 56ch;
+  margin: 0 0 20px;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.hero-cta { margin: 0; max-width: 56ch; }
+
+/* ---------- Product mockup (dossier window) — § 2.5 ---------- */
+
+/* Whole container is a decorative illustration: hidden from AT and inert. */
+.mockup {
+  max-width: 420px;
+  margin-inline: auto;
+  position: relative;
+  z-index: 1;
+  pointer-events: none;
+}
+/* Absorbs the secondary sheet's 12px right/bottom offset — nothing pokes
+   past the viewport at 320px (§ 4.2). */
+.mockup-stack {
+  position: relative;
+  padding: 0 12px 12px 0;
+}
+
+/* Secondary sheet (S3 lens): smaller sheet behind, offset 12px right +
+   12px bottom; its rows are occluded BY DESIGN — visible sliver is a
+   depth cue only (§ 2.5 item 3). */
+.back-sheet {
+  position: absolute;
+  top: 40px;
+  left: 24px;
+  right: 0;
+  bottom: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--ink-2);
+  border-radius: 4px;
+  box-shadow: var(--shadow-sheet);
+  padding: 16px;
+}
+.back-title {
+  margin: 0 0 8px;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.dossier-window {
+  position: relative;
+  z-index: 1;
+  background: var(--surface);
+  border: 1px solid var(--ink-2);
+  border-radius: 4px;
+  box-shadow: var(--shadow-sheet);
+}
+
+.window-chrome {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  min-height: 36px;
+  padding: 8px 12px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--rule);
+  border-radius: 4px 4px 0 0;
+}
+.window-title {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.window-actions { display: flex; gap: 6px; }
+
+/* Inert span styled as a button — NEVER an interactive element (§ 2.5) */
+.mock-btn {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--ink-2);
+  background: var(--surface);
+  border: 1px solid var(--ink-2);
+  border-radius: 4px;
+  padding: 6px 10px;
+  cursor: default;
+}
+
+.sheet {
+  padding: 16px;
+  aspect-ratio: 1 / 1.4; /* A4-ish target; content-driven fallback verified at build (§ 2.5) */
+}
+@media (min-width: 640px) {
+  .sheet { padding: 20px; }
+}
+
+.sheet-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.sheet-title {
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+/* Status chip: tint fill, radius 4px — NOT pill radius (pill = badge only) */
+.status-chip {
+  flex: 0 0 auto;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--ink-2);
+  background: var(--tint);
+  border-radius: 4px;
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
+.mock-row {
+  margin: 0;
+  padding: 8px 0;
+  border-bottom: 1px solid var(--rule);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem; /* 13px; 12.5px ≤ 360px (§ 3.2) */
+  line-height: 1.4;
+  color: var(--ink);
+  overflow-wrap: break-word; /* rows wrap, never overflow (§ 2.5 item 4) */
+}
+@media (max-width: 359.98px) {
+  .mock-row { font-size: 0.78125rem; }
+}
+
+/* Hatched empty photo frames — hatching (not color) signals "no photo";
+   no real people or buildings anywhere (§ 2.5 item 2). */
+.photo-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+.photo-frame {
+  flex: 1 1 0;
+  aspect-ratio: 4 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border: 1px solid var(--ink-2);
+  border-radius: 4px;
+  background: repeating-linear-gradient(45deg, transparent 0 6px, #D8DDE2 6px 7px);
+}
+.photo-label {
+  font-size: 0.6875rem;
+  color: var(--ink-2);
+  text-align: center;
+}
+
+.sheet-foot {
+  margin: 12px 0 0;
+  padding-top: 8px;
+  border-top: 1px solid var(--rule);
+  font-size: 0.6875rem;
+  color: var(--ink-2);
+}
+
+/* ---------- Problem narrative ---------- */
+
+.onfile {
+  max-width: 720px;
+  margin: 24px 0;
+  padding: 20px 24px;
+  background: var(--tint);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+}
+.onfile p { margin: 0; max-width: 66ch; }
+.onfile p + p { margin-top: 12px; }
+
+/* ---------- What it does (feature cards — non-interactive) ---------- */
+
+.feature-grid { display: grid; gap: 24px; }
+@media (min-width: 640px) {
+  .feature-grid { grid-template-columns: repeat(2, 1fr); }
+  /* Fifth card: centered full row (designer option a) */
+  .feature-card-wide {
+    grid-column: 1 / -1;
+    max-width: 560px;
+    margin-inline: auto;
+  }
+}
+.feature-card {
+  background: var(--surface);
+  border: 1px solid var(--rule); /* decorative hairline; cards are non-interactive (D-6) */
+  border-radius: 6px;
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+}
+@media (max-width: 639.98px) {
+  .feature-card { padding: 20px; }
+}
+.feature-card svg {
+  display: block;
+  margin-bottom: 12px;
+  color: var(--accent);
+}
+.feature-card h3 {
+  margin: 0 0 8px;
+  font-size: clamp(1.125rem, 1.06rem + 0.3vw, 1.25rem); /* 18 → 20px */
+  line-height: 1.35;
+  font-weight: 600;
+  color: var(--ink);
+}
+.feature-card p { margin: 0; color: var(--ink); }
+
+/* ---------- How it works (plain paragraphs, no list markup) ---------- */
+
+.steps { display: grid; gap: 32px; }
+@media (min-width: 900px) {
+  .steps { grid-template-columns: repeat(3, 1fr); }
+  .step { position: relative; }
+  /* Decorative hairline stub pointing to the next column — lives in the
+     32px gap, never behind text (§ 2.2). Hidden on mobile. */
+  .step:not(:last-child)::after {
+    content: "";
+    position: absolute;
+    top: 16px;
+    right: -24px;
+    width: 24px;
+    height: 1px;
+    background: var(--rule);
+  }
+}
+.step { margin: 0; max-width: 66ch; }
+.step-token {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: 1.75rem; /* 28px */
+  line-height: 1.2;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+
+/* ---------- Pricing ---------- */
+
+.price-card {
+  max-width: 720px;
+  margin-inline: auto;
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-top: 3px solid var(--accent);
+  border-radius: 6px;
+  box-shadow: var(--shadow-card);
+  padding: 32px;
+}
+@media (max-width: 639.98px) {
+  .price-card { padding: 20px; }
+}
+.price-line { margin: 0 0 16px; font-size: 1rem; line-height: 1.6; }
+.price-figure {
+  font-size: clamp(2rem, 1.8rem + 1vw, 2.25rem); /* 32 → 36px */
+  font-weight: 700;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink);
+}
+.price-note {
+  margin: 0 0 12px;
+  max-width: 66ch;
+  color: var(--ink-2);
+}
+.price-flat {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+/* ---------- FAQ (static, fully expanded — no accordions, no-JS page) ---------- */
+
+.faq-list {
+  max-width: 720px;
+  margin-inline: auto;
+}
+.faq-item { padding-block: 20px; }
+.faq-item + .faq-item { border-top: 1px solid var(--rule); }
+.faq-item h3 {
+  margin: 0 0 8px;
+  font-size: clamp(1.125rem, 1.06rem + 0.3vw, 1.25rem);
+  line-height: 1.35;
+  font-weight: 600;
+  color: var(--ink);
+}
+.faq-item p {
+  margin: 0;
+  max-width: 66ch;
+  /* Disclaimers (A-3/A-5/A-7) carry identical size and contrast — never
+     fine-print grey (§ 2.2 FAQ). */
+}
+
+/* ---------- Signup band (the page's only dark region and focal point) ---------- */
+
+.signup-band {
+  background: var(--band);
+  padding-block: clamp(3.5rem, 8vw, 6rem); /* 56 → 96px — most generous on the page */
+}
+.band-inner { max-width: 760px; }
+
+.band-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 1.6rem + 1.2vw, 2.25rem); /* 32 → 36px — largest section type (S-1) */
+  line-height: 1.2;
+  font-weight: 700;
+  margin: 0 0 12px;
+  color: #FFFFFF; /* 16.46:1 on band (§ 3.1 #10) */
+}
+.band-sub {
+  margin: 0 0 32px;
+  color: var(--band-slate); /* 7.73:1 (§ 3.1 #12) */
+}
+
+.signup-form { max-width: 560px; }
+.field-label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #FFFFFF; /* visible label (§ 3.1 #10) */
+}
+.form-row { display: flex; flex-direction: column; gap: 12px; }
+#signup-email {
+  width: 100%;
+  min-height: 48px; /* touch target (D-7) */
+  padding: 12px 16px;
+  background: var(--surface);
+  color: var(--ink);
+  border: 1px solid var(--ink-2);
+  border-radius: 6px;
+  font: inherit;
+}
+#signup-email:focus {
+  outline: 2px solid var(--paper);
+  outline-offset: 2px;
+}
+.btn-signup {
+  min-height: 48px;
+  padding: 12px 24px;
+  background: var(--action); /* the page's ONLY orange element (D-1) */
+  color: #FFFFFF; /* 5.18:1 — lowest passing pairing (§ 3.1 #13) */
+  border: none;
+  border-radius: 6px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+/* Hover: darker fill + 1px paper outline at offset 0 — the § 3.1 fix for the
+   2.25:1 hover-boundary finding (outline vs band 15.48:1, vs hovered fill
+   6.87:1). :not(:focus) keeps the stronger 2px focus ring intact. */
+.btn-signup:hover:not(:focus) {
+  background: var(--action-hover);
+  outline: 1px solid var(--paper);
+  outline-offset: 0;
+}
+.btn-signup:focus {
+  outline: 2px solid var(--paper);
+  outline-offset: 2px;
+}
+@media (min-width: 560px) {
+  .form-row { flex-direction: row; align-items: stretch; }
+  #signup-email { flex: 1 1 auto; }
+  .btn-signup { flex: 0 0 auto; }
+}
+
+.band-fine,
+.band-note {
+  max-width: 560px;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--band-slate); /* full AA contrast — never fine-print grey (§ 3.1 #12) */
+}
+.band-fine { margin: 20px 0 0; }
+.band-note { margin: 8px 0 0; }
+
+/* ---------- Footer (contentinfo landmark) ---------- */
+
+.site-footer {
+  background: var(--paper);
+  border-top: 1px solid var(--rule);
+  padding-block: 32px;
+}
+.site-footer .wordmark {
+  margin: 0 0 12px;
+  font-family: var(--font-serif);
+  font-weight: 700;
+  font-size: 1.25rem; /* ~20px (§ 2.2 footer) */
+  color: var(--ink);
+}
+.footer-line {
+  margin: 0 0 8px;
+  font-size: 0.875rem; /* 14px ink-2 — 7.71:1 (§ 3.1 #4) */
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+/* ============================================================
+   r3 additions — live-signup status region + consent banner
+   (base-template parity: canonical signup.js + tracking.js per
+   consent-banner-sticky__20261002-145950; certified sources:
+   staging t0001 r3.1 + Quoteleg production r5. Banner CSS below
+   is the certified t0001 structure with DocuPlow tokens mapped;
+   every pre-r3 rule above stays byte-identical.)
+   ============================================================ */
+
+:root {
+  /* r3 band-scoped status tokens — recomputed for WCAG AA on the deep-navy
+     band #16202B (ui-ux hard rule; the white-surface --error token #8A1C1C
+     is 1.77:1 there and stays PROHIBITED on the band, § 3.1 #17). Both are
+     deliberately light/desaturated so status text never competes with the
+     hi-vis orange button (the band's only filled accent element). */
+  --band-success: #7CBE94; /* workwear green family — 7.57:1 on the band */
+  --band-error: #F2A2AC;   /* light red-rose (hue ~351°, not orange) — 8.26:1 on the band */
+}
+
+/* ---------- Signup status region (r3; in-form, role="status") ---------- */
+
+/* The canonical signup.js writes success/error messages here on live pages
+   only; locally the element ships empty and renders nothing. Empty state
+   reserves one transparent line (NEVER display:none — the live region stays
+   registered with assistive tech) so a submit outcome never shifts the band
+   (2026-10-01 directive; certified pattern from t0001 r3.1 / Quoteleg r5).
+   Base color is the neutral band-slate (7.73:1) — state classes override. */
+.signup-status {
+  margin: 12px 0 0;
+  min-height: 1.5em; /* one status line, reserved in the empty state too */
+  font-size: 0.9375rem;
+  line-height: 1.5;
+  font-weight: 600;
+  color: var(--band-slate);
+}
+.signup-status--success { color: var(--band-success); } /* 7.57:1 on band */
+.signup-status--error { color: var(--band-error); }     /* 8.26:1 on band */
+/* Two-line reserve on narrow viewports: the longest live message measures
+   519px on one line (harness-measured, r3) and the status column is capped
+   by the 560px form width (viewport minus 40px side padding), so it wraps to
+   two lines below ~560px — reserved to 600px for cross-platform rendering
+   variance. The reserve exists in the empty state too, so every submit
+   outcome renders at zero layout shift (verified 320/360/390/560/640/1440). */
+@media (max-width: 599.98px) {
+  .signup-status { min-height: 3em; }
+}
+
+/* ---------- Consent banner + persistent privacy control (r3) ---------- */
+/* Sticky bottom overlay (revision consent-banner-sticky__20261002-145950;
+   the 2026-10-02 user directive supersedes the 2026-10-01 normal-flow
+   placement, every other ui-ux spec consent-banner-spec__20261001-142148.md
+   §4–§8 rule is kept): fixed bottom overlay with cookie-banner behavior —
+   pops up pinned to the viewport bottom until a choice is made; non-modal
+   (page stays scrollable/usable, no focus trap in decision/manager modes).
+   The wrapper spans the viewport bottom but is click-through (pointer-events:
+   none); only the card takes pointer events, so the page behind the padding
+   zones stays interactive. Native details/summary disclosure, two
+   equal-prominence ≥48px decision buttons, no dismiss-X in the unset state,
+   persistent footer control, manager mode on reopen, no unsolicited focus
+   steal. Reuses this page's tokens only — zero new colors (the overlay shadow
+   is the page's ink token #1C2430 at alpha; card radius follows the page's
+   6px card language). Ships hidden in the markup; tracking.js unhides it only
+   with a live enabled tracking config (fully inert locally). */
+
+.consent-banner {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60;
+  padding: 0 1rem 1.25rem;
+  pointer-events: none;
+}
+
+.consent-banner__inner {
+  pointer-events: auto;
+  max-width: 33rem;
+  margin: 0 auto;
+  background: var(--surface);
+  border: 1px solid var(--ink-2);
+  border-radius: 6px;
+  padding: 1.25rem 1.25rem 1rem;
+  box-shadow: 0 12px 32px rgba(28, 36, 48, 0.22), 0 2px 8px rgba(28, 36, 48, 0.14);
+  /* A fixed card must never overflow the top of the viewport: capped height
+     with internal scroll when the details expand inline. */
+  max-height: calc(100vh - 2.5rem);
+  overflow-y: auto;
+}
+
+.consent-banner__inner h2 {
+  margin: 0 0 0.75rem;
+  font-size: 1.25rem;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.consent-banner__body {
+  margin: 0 0 1rem;
+  font-size: 0.95rem;
+  color: var(--ink-2);
+  overflow-wrap: break-word;
+}
+
+.consent-banner__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin: 0 0 0.5rem;
+}
+
+/* Decision buttons: identical for both — equal prominence by construction
+   (no filled-vs-outlined hierarchy); ≥48px touch targets. Fill is the page's
+   workwear-blue accent (white label 8.39:1 — verified AA). Hover keeps the
+   same fill (Quoteleg-certified precedent: no new hover token on a page
+   whose banner reuses existing tokens only). */
+.consent-btn {
+  min-height: 48px;
+  padding: 0.7rem 1.25rem;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #FFFFFF;
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.consent-btn:hover { background: var(--accent); border-color: var(--accent); }
+
+.consent-btn--ghost { background: transparent; color: var(--accent); }
+.consent-btn--ghost:hover { background: transparent; border-color: var(--accent); }
+
+/* Manager-mode extras */
+.consent-banner__current {
+  margin: 0.75rem 0 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* Native inline disclosure styled as a text button */
+.consent-details { margin: 0.25rem 0 0; }
+
+.consent-details__summary {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.5rem 0.25rem;
+  color: var(--accent);
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+
+/* Always-visible focus (page convention § 4.6 — plain :focus, like every
+   other control here; the summary is not matched by the global a/button/
+   input/[tabindex] rule above). */
+.consent-details__summary:focus {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.consent-details__summary::-webkit-details-marker { display: none; }
+.consent-details__summary::after { content: "+"; margin-left: 0.4rem; font-weight: 700; }
+.consent-details[open] .consent-details__summary::after { content: "\2212"; }
+
+.consent-details__body {
+  font-size: 0.9rem;
+  color: var(--ink-2);
+  overflow-wrap: break-word;
+}
+
+/* Fullscreen-panel Close control (first child of the details body). Lives in
+   the fullscreen panel on compact viewports only; hidden on the desktop
+   inline view. The button itself never receives the hidden attribute, so the
+   display:none base is safe. */
+.consent-details__close { display: none; }
+
+.consent-details__body p { margin: 0.75rem 0 0.25rem; }
+.consent-details__body ul { margin: 0.25rem 0; padding-left: 1.25rem; }
+.consent-details__body li { margin: 0.25rem 0; }
+
+.consent-details__heading {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+/* Persistent "Privacy choices" control in the footer (post-decision).
+   Layout is scoped to :not([hidden]) so an author rule can never defeat the
+   UA [hidden]{display:none}: before a choice exists, while the banner/manager
+   surface is open, and on the fully-inert local page the control is invisible
+   AND unfocusable (QA F1 lesson, staging certification 2026-10-01). */
+.footer-privacy:not([hidden]) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0.5rem 0 0;
+}
+
+.footer-privacy__button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0.5rem 0.75rem;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: transparent;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.footer-privacy__state {
+  font-size: 0.85rem;
+  color: var(--ink-2);
+}
+
+/* Mobile compact mode (≤480px, the certified banner breakpoint): a very small
+   bottom bar — heading + Allow/Decline + the collapsed "Privacy details"
+   trigger. The body paragraph is CSS-hidden here; the fullscreen details
+   panel below carries every fact it contains. Buttons keep ≥48px touch
+   targets and identical (equal-prominence) styling; they sit side by side and
+   wrap to stacked full-width rows exactly when the labels don't fit (the
+   superseded §4.2 stacked-full-row rule lives on as that fallback). The bar
+   floats 5rem above the viewport bottom, reserving a strip where the live
+   reCAPTCHA Enterprise badge (fixed bottom-right, ~256×60, injected by the
+   certified loader in signup.js after a submit attempt) sits on live pages —
+   so no banner control is ever covered or click-blocked by it at 320/390
+   (harness-measured); the centered desktop card never reaches that zone. */
+@media (max-width: 480px) {
+  .consent-banner { padding: 0 0.75rem 5rem; }
+
+  .consent-banner__inner {
+    padding: 0.875rem 0.875rem 0.5rem;
+    max-height: calc(100vh - 6.5rem);
+  }
+
+  .consent-banner__inner h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.0625rem;
+  }
+
+  .consent-banner__body { display: none; }
+
+  .consent-banner__actions {
+    gap: 0.5rem;
+    margin: 0 0 0.25rem;
+  }
+
+  .consent-banner__actions .consent-btn {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 0.7rem 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  .consent-details__summary { font-size: 0.875rem; }
+
+  /* Fullscreen details: opening the disclosure on compact viewports swaps the
+     bar for a fullscreen fixed panel (tracking.js adds
+     .consent-banner--details-open, which hides the bar via visibility — the
+     panel overrides visibility so it stays rendered; visibility:hidden also
+     removes the bar's controls from the tab order and the a11y tree, so no
+     obscured focus can occur). z-index -1 keeps the bar's card above the
+     panel inside the banner's own stacking context. The panel carries exactly
+     the desktop details content and scrolls internally; its bottom padding
+     reserves the badge strip (5rem) plus air. */
+  .consent-details__close {
+    display: flex;
+    position: sticky;
+    top: 0;
+    align-items: center;
+    min-height: 44px;
+    padding: 0.25rem 0.5rem 0.25rem 0;
+    font: inherit;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--surface);
+    border: none;
+    border-bottom: 1px solid var(--ink-2);
+    border-radius: 0;
+    cursor: pointer;
+    text-align: left;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  .consent-details__close:hover { color: var(--accent); }
+
+  .consent-details[open] .consent-details__body {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: var(--surface);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0 1rem 6rem;
+    visibility: visible;
+  }
+
+  .consent-banner--details-open .consent-banner__inner { visibility: hidden; }
+}
+
+/* Print (certified fix-round pattern, 2026-10-02): the fixed consent banner
+   and the persistent footer control are interactive chrome, not page copy —
+   hide them so the fixed banner neither interleaves with the page copy nor
+   repeats per printed page. .footer-privacy is restated at its certified
+   :not([hidden]) specificity: the (0,2,0) screen rule would otherwise beat a
+   plain (0,1,0) print rule and keep printing once a choice exists (the same
+   cascade mechanism as the QA F1 hidden-state guard). */
+@media print {
+  .consent-banner,
+  .footer-privacy:not([hidden]) { display: none; }
+}

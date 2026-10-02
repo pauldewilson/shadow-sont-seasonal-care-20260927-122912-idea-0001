@@ -1,0 +1,1 @@
+window.__SHADOW_SIGNUP_CONFIG__ = {"backendUrl": "https://canvaserpcanada-prod-shadow-api.victoriousdesert-5c606a5a.canadacentral.azurecontainerapps.io", "siteKey": "6Lc6Yw0tAAAAAE95Jyc4byYR4MraFJvB3JYxABDj", "source": "sont-seasonal-care__20260927-122912/idea-0001", "consentVersion": "2026-10-signup-v1", "captchaRequired": true};
