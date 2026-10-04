@@ -1,1 +1,1 @@
-window.__SHADOW_TRACKING_CONFIG__ = {"enabled": true, "endpoint": "https://canvaserpcanada-prod-shadow-api.victoriousdesert-5c606a5a.canadacentral.azurecontainerapps.io", "siteId": "sont-seasonal-care__20260927-122912/idea-0001", "environment": "production", "noticeVersion": "2026-10-analytics-v1"};
+window.__SHADOW_TRACKING_CONFIG__ = {"enabled": true, "endpoint": "https://canvaserpcanada-prod-shadow-api.victoriousdesert-5c606a5a.canadacentral.azurecontainerapps.io", "siteId": "docuplow", "environment": "production", "noticeVersion": "2026-10-analytics-v1"};
