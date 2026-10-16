@@ -979,3 +979,225 @@ h1 {
   .consent-banner,
   .footer-privacy:not([hidden]) { display: none; }
 }
+
+/* ============================================================
+   r4 additions — fleet-conversion__20261016-120445 (mobile
+   conversion revision). Appended AFTER every existing rule
+   (incl. the print block) in BOTH variants: source order makes
+   the strip block the last word on consent geometry <1024px;
+   the certified ≤480 block and the base card are overridden,
+   never edited. Zero new hues, zero new strings, zero JS.
+   ============================================================ */
+
+:root {
+  /* r4 mobile bottom reserve (R-6): ≥ the 104px collapsed strip + margin;
+     constant across consent states. env() computes 0 today (the meta
+     viewport ships no viewport-fit=cover) — the term is inert by design
+     and the meta stays byte-untouched (F10). */
+  --strip-reserve: 112px;
+}
+
+/* ---------- r4 C1: consent strip regime (<1024px) ---------- */
+/* Single-occupant bottom strip: consent pre-choice/manager, sticky CTA
+   bar post-choice. The aside's [hidden] attribute is the state machine —
+   no author display rule on .consent-banner itself (the UA [hidden]
+   {display:none} must keep winning). :has()-less engines degrade to a
+   transient stacked strip pre-choice (recorded, accepted). */
+@media (max-width: 1023.98px) {
+  body:has(.consent-banner:not([hidden])) .sticky-cta { display: none; }
+
+  .consent-banner { padding: 0; }   /* flush bar; the certified 1.25rem float and the ≤480 5rem badge float are superseded (F5/F6) */
+
+  .consent-banner__inner {
+    max-width: none;
+    margin: 0;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "head details"
+      "actions actions";
+    column-gap: 12px;
+    row-gap: 4px;
+    border: none;
+    border-top: 1px solid var(--rule);   /* decorative separation only (D-6); no control relies on it */
+    border-radius: 0;                    /* R-5: square bars, rounded controls */
+    box-shadow: var(--shadow-card);      /* F6: the page's own restrained shadow replaces the ink-alpha float in this regime */
+    padding: 6px 10px calc(6px + env(safe-area-inset-bottom));
+    padding-right: calc(10px + 74px);    /* C2: 84px badge lane (tab ~70 + 14 air) — lanes EVERY row incl. manager extras */
+    max-height: none;
+    overflow: visible;                   /* focus rings never clip (D-7); the bar itself never scrolls */
+  }
+
+  /* Manager-mode extras (current / toggle / close) flow as full-width
+     implicit grid rows below the actions row. Body + note are display:none
+     (below) — not grid items, unaffected. */
+  .consent-banner__inner > *:not(h2):not(.consent-banner__actions):not(.consent-details) {
+    grid-column: 1 / -1;
+  }
+
+  .consent-banner__inner h2 {
+    grid-area: head;
+    align-self: center;
+    min-width: 0;          /* 320px degraded mode: wraps to 2 lines instead of overflowing the lane */
+    margin: 0;
+    font-size: 0.875rem;   /* battery finding: designer's E1 lever (was 15px) — see note below */
+    line-height: 1.4;
+    font-weight: 600;
+    color: var(--ink);     /* 15.62:1 on surface */
+  }
+  /* r4 battery finding (probe-proven): the designer's E1 lever applied. The
+     question measures 155.3px at 15px vs the 148.8px available head column
+     (281px ICB lane − 12 gap − 120.2 summary) at 390 — a 2-line wrap. At the
+     designer's recorded lever size (0.875rem) it measures 144.9px: single
+     line with 3.9px slack at 390, restoring the single-line row-1 checkpoint
+     at 375/390. Contrast unchanged (same ink/surface pairing). */
+
+  .consent-banner .consent-details {
+    grid-area: details;
+    justify-self: end;
+    align-self: center;
+    margin: 0;
+    min-width: 44px;       /* summary keeps its 44px touch floor */
+  }
+  .consent-details__summary { font-size: 0.875rem; padding: 0 2px; }
+  /* "+"/"−" ::after furniture carried byte-identical from the base block — NOT touched here. */
+
+  /* Decision row: EXISTING DOM order preserved (Allow left, Decline right —
+     no reorder, hooks byte-stable). Hierarchy by fill only (F2): Allow keeps
+     the certified accent fill; Decline takes the ghost treatment via the
+     attribute selector (no markup change). Equal 44px — no shrink. */
+  .consent-banner__actions {
+    grid-area: actions;
+    margin: 0;
+    gap: 8px;
+    flex-wrap: nowrap;     /* 320 degradation wraps labels INSIDE the buttons, never stacks the row */
+  }
+  .consent-btn {
+    min-height: 44px;
+    padding: 8px 12px;
+    font-size: 0.875rem;   /* 14px/600 (weight inherited from base) */
+  }
+  .consent-banner__actions .consent-btn { flex: 0 1 auto; min-width: 0; }
+  /* r4 battery finding (fleet-conversion__20261016-120445, probe-proven): the
+     ≤480 block's .consent-banner__actions .consent-btn (0,2,0) beats this
+     block's .consent-btn (0,1,0) on padding, and the fixed overlay's ICB
+     loses the classic scrollbar (390 viewport → 375 usable, 375 → 360 — the
+     certified mergesight-r10 lesson), so the 12px spec padding left the
+     labels 1.2px over their content boxes: both buttons wrapped to 2 lines
+     (69.2px) and the strip measured 130.2px vs the 104px arithmetic. The
+     compact padding is restated here at (0,2,0) with 6px inline padding:
+     one-line labels fit the measured lane with ≥6.6px slack at 375
+     (sum 259.4 ≤ 266) and ≥21.6px at 390, buttons return to the 44px floor
+     (40.4px natural < 44), strip ≈105px ≤ 112 cap. Vertical 8px and the
+     44px floor are the spec values, unchanged. */
+  .consent-banner__actions .consent-btn { padding: 8px 6px; }
+  .consent-banner__actions .consent-btn[data-consent-decline] {
+    background: transparent;   /* the existing --ghost treatment, applied without markup change */
+    color: var(--accent);      /* 8.39:1 */
+  }
+  .consent-banner__actions .consent-btn[data-consent-decline]:hover {
+    background: transparent;   /* certified precedent: hover keeps the same fill */
+    border-color: var(--accent);
+  }
+  .consent-banner__current { margin: 0; }
+
+  /* F3 (orchestrator-approved): the paragraphs cannot fit a 104px strip.
+     CSS-scoped hide — no DOM move; hooks/strings/classes untouched; the
+     ≥1024 card keeps both; the panel's "The anonymous visit count" section
+     carries the fact pre-choice on mobile. tracking.js still unhides the
+     note's attribute in decision mode — display:none wins visually, a no-op
+     interplay verified against the state machine. */
+  .consent-banner__body,
+  .consent-banner__note { display: none; }
+
+  /* Fullscreen-details mode extended to the whole strip regime (designer
+     §2.1). The Close control's display contract is a load-bearing
+     tracking.js input (isFullscreenPanelMode reads it) — display:flex
+     <1024 / display:none ≥1024. Declarations identical to the certified
+     ≤480 rules; the ≤480 block is left byte-untouched (same values win
+     by source order — no conflict). */
+  .consent-details__close { display: flex; }
+  .consent-details[open] .consent-details__body {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: var(--surface);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: 0 1rem 6rem;   /* keeps panel text clear of the badge tab */
+    visibility: visible;
+  }
+  .consent-banner--details-open .consent-banner__inner { visibility: hidden; }
+}
+
+/* ---------- r4 C3: sticky mobile CTA bar (post-choice) ---------- */
+.sticky-cta {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 59;   /* under the consent strip's 60 — degraded co-presence only */
+  background: var(--surface);
+  border-top: 1px solid var(--rule);
+  box-shadow: var(--shadow-card);
+  padding: 8px 10px calc(8px + env(safe-area-inset-bottom));
+}
+.sticky-cta__anchor {
+  display: block;
+  width: 100%;
+  min-height: 48px;      /* = the page's primary-CTA touch standard */
+  line-height: 48px;     /* single-line label */
+  text-align: center;
+  border-radius: 6px;
+  background: var(--accent);   /* R-1: navy — orange stays exclusive to the band's [S-4] button */
+  color: #FFFFFF;        /* 8.39:1 */
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none; /* button-shaped control; fill carries the affordance */
+}
+.sticky-cta__anchor:active { background: var(--ink); }   /* pressed feedback, in-token; white label 15.62:1 */
+/* C2 lane, conversion surface: engages exactly when the badge can appear.
+   r4 battery finding (probe-proven): the spec's margin-right is IGNORED on a
+   display:block width:100% box (CSS 2.1 §10.3.3 over-constraint drops
+   margin-right in ltr) — measured: computed margin-right 74px, width stayed
+   355px, right-edge clearance 25px < the 84px invariant. The lane is
+   restated as a width calc, which the over-constraint rule cannot drop:
+   right edge lands exactly 84px clear of the fixed layer's ICB edge. */
+body:has(.grecaptcha-badge) .sticky-cta__anchor { width: calc(100% - 74px); }
+@media (min-width: 1024px) { .sticky-cta { display: none; } }   /* desktop byte-stable */
+@media print { .sticky-cta { display: none; } }                 /* fixed chrome, not page copy */
+
+/* ---------- r4 C4: mid-page anchors (secondary outline rank) ---------- */
+.cta-anchor-row { margin: 32px 0 0; }
+.cta-outline {
+  display: inline-block;
+  min-height: 48px;
+  padding: 12px 24px;
+  border: 1px solid var(--ink-2);   /* 7.71:1 on paper — ≥3 non-text boundary (D-6) */
+  border-radius: 6px;
+  background: transparent;
+  color: var(--accent);             /* 7.89:1 on paper */
+  font-size: 1rem;
+  font-weight: 600;
+  text-decoration: none;            /* button-shaped; shape + accent label carry the affordance */
+}
+.cta-outline:hover {
+  background: var(--tint);          /* the quiet-fill token; label stays --accent (7.12:1) */
+  color: var(--accent);
+  border-color: var(--ink-2);
+}
+
+/* ---------- r4 R-6: constant mobile bottom reserve ---------- */
+@media (max-width: 1023.98px) {
+  body { padding-bottom: calc(var(--strip-reserve) + env(safe-area-inset-bottom)); }
+  html { scroll-padding-bottom: calc(var(--strip-reserve) + env(safe-area-inset-bottom)); }
+  .signup-band {
+    padding-bottom: calc(clamp(3.5rem, 8vw, 6rem) + var(--strip-reserve) + env(safe-area-inset-bottom));
+  }
+}
+
+/* visual-qa r4: hero H1 wraps 2 lines with a lone-word orphan ("record.") at 375/390 on the QA
+   renderer family; text-wrap: balance re-flows the same 2-line block ("Every storm" /
+   "on the record."), line count and block height unchanged, fold geometry untouched,
+   C5 size decision unchanged; older engines ignore the property */
+.hero-text h1 { text-wrap: balance; }

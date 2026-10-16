@@ -45,7 +45,7 @@
     <div class="container hero-grid">
       <div class="hero-text">
         <!-- [H-B] -->
-        <p class="badge"><span class="badge-dot" aria-hidden="true"></span>Launching Q4 2026</p>
+        <p class="badge"><span class="badge-dot" aria-hidden="true"></span>Launching Q1 2027</p>
         <!-- [H-1] -->
         <h1 id="h1">Every storm on the record.</h1>
         <!-- [H-2] -->
@@ -110,6 +110,8 @@
       </div>
       <!-- [P-4] -->
       <p class="prose">And the record-keeping never really stops: <strong>SASC certification</strong> asks for an annual report, <strong>insurers and adjusters</strong> ask for documentation when a claim lands, and <strong>property managers</strong> demand service logs by contract.</p>
+      <!-- r4 C4: decision-moment anchor — [S-4] byte-identical reuse (sanctioned); → #signup -->
+      <p class="cta-anchor-row"><a class="cta-outline" href="#signup">Notify me at launch</a></p>
     </div>
   </section>
 
@@ -186,6 +188,8 @@
         <!-- [PR-3] -->
         <p class="price-flat">One flat season price — no pay-per-report fees.</p>
       </div>
+      <!-- r4 C4: decision-moment anchor — [S-4] byte-identical reuse (sanctioned); → #signup -->
+      <p class="cta-anchor-row"><a class="cta-outline" href="#signup">Notify me at launch</a></p>
     </div>
   </section>
 
@@ -240,7 +244,7 @@
           <!-- [Q-8] -->
           <h3>When does it launch?</h3>
           <!-- [A-8] -->
-          <p>Q4 2026 — in time for winter. Leave your details below and we'll be in touch when we launch.</p>
+          <p>Q1 2027 — in time for winter. Leave your details below and we'll be in touch when we launch.</p>
         </div>
       </div>
     </div>
@@ -389,7 +393,7 @@
     <!-- [F-1] -->
     <p class="footer-line">DocuPlow — documentation tooling for Ontario snow and ice contractors. Not legal advice.</p>
     <!-- [F-2] -->
-    <p class="footer-line">Launching Q4 2026.</p>
+    <p class="footer-line">Launching Q1 2027.</p>
     <!-- Persistent post-decision privacy control: hidden until a choice exists
          and while the banner/manager surface is open (tracking.js toggles it);
          on the inert local page it never appears. -->
@@ -402,6 +406,12 @@
     <p class="sr-only" role="status" data-consent-status></p>
   </div>
 </footer>
+
+<!-- r4 C3: persistent mobile CTA — [S-4] byte-identical reuse (sanctioned,
+     handoff scope items 3-4); destination = the signup band section (#signup). -->
+<div class="sticky-cta">
+  <a class="sticky-cta__anchor" href="#signup">Notify me at launch</a>
+</div>
 
 <script src="signup.js" defer></script>
 <script src="signup-config.js" defer></script>
